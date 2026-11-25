@@ -1,27 +1,4 @@
-"""
-analise_arxiv.py — v2.4
 
-Mudanças em relação à v2.3:
-  1. COLETA: amostragem estratificada por mês dentro de cada janela. Antes, a
-     ordenação ascendente + max_results=500 devolvia só as primeiras semanas
-     de cada janela (o bloco de amostragem aleatória nunca rodava).
-     Agora há também log de datas, cache em JSON e CSV de auditoria.
-  2. ÂNCORAS: contadas por documento direto no texto limpo, SEM blacklist e
-     SEM o filtro de "parece palavra" (que rejeitava llm/gpt por não terem
-     vogais). Antes as âncoras eram removidas do corpus antes de serem contadas.
-  3. CLASSIFICAÇÃO IA: usa lift = P(âncora|w) / P(âncora) (taxa-base do corpus)
-     com mínimo de documentos, em vez de limiares absolutos.
-  4. TESTE EM NÍVEL DE DOCUMENTO: Mann-Whitney sobre frequência relativa por
-     documento (p_doc), com BH-FDR próprio. O Z de log-odds por token ignora
-     que palavras aparecem em rajadas dentro de um mesmo resumo. Coluna
-     Robusto = significativo nos dois testes.
-  5. COMPOSTOS: em modo "completa", tokens que contêm termos da blacklist de IA
-     (transformerbased, selfattention, llmbased...) também são removidos.
-  6. Stemmer Snowball (Porter2) no lugar do Porter (bias/biases passam a
-     colapsar no mesmo radical). seq2seq é normalizado antes de remover dígitos.
-     Travessões são tratados antes da remoção de não-ASCII.
-  7. E-mail do User-Agent passa a ser argumento (--email).
-"""
 
 from __future__ import annotations
 
